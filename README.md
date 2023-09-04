@@ -30,6 +30,8 @@ Game can ONLY be played in a console as of now
 ## September 4th, 2023
 - "Play Again" option for when the Player is defeated
   - Player can choose to restart the game or exit upon being defeated
+- "High Score" feature for if Player beats an already saved high score from the game
+  - Player can enter their name along with the high score
 
 # Plans for Future Features
 - Increase in Opponent difficulty when a Player moves on to "The Next Level"
@@ -37,5 +39,4 @@ Game can ONLY be played in a console as of now
 - Blocking move that will decrease damage the Player/Opponent would take from a move
 - Power-ups for both Player and Opponent
 - "Boss" stages
-- Save "Level High Score" and "Damage to Opponent High Score" for the Player
-  - Feature that allows the user to input their name will be included with this
+- Player can have the Top 10 High Scores listed for them before playing the game
