@@ -271,6 +271,11 @@ public class Main {
         p.setLevel(); // Increases current level Player is on by 1
     }
 
+    /**
+     * Restarts the game by resetting Player/Opponent stats and setting Level back to Level 1
+     * @param p is the Player
+     * @param o is the Opponent
+     */
     private static void restart(Player p, Opponent o)
     {
         p.setLevel(1);
