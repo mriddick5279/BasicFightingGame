@@ -141,10 +141,47 @@ public class Main {
 
                 playerTurn = true; // Tells that it is the Player's turn now
 
-                // Checks for GAME OVER scenario where Player is defeated
+                // Checks for GAME OVER scenario where Player is defeated and prompts Player on if they want to restart
                 if (p.getHealth() <= 0 )
                 {
-                    playerDead = true;
+                    // "Restart Game" prompt and Player input
+                    System.out.println("You have been defeated. Would you like to restart?\n" +
+                            "Y or N");
+                    String userRestart = userInput.nextLine();
+
+                    boolean valid; // Keeps track of if the Player has entered a valid response to "Restart Game" prompt
+
+                    // Detects if Player entered correct response of "Y" or "N" (case is ignored)
+                    if (!userRestart.equalsIgnoreCase("y"))
+                    {
+                        if (!userRestart.equalsIgnoreCase("n"))
+                        {
+                            valid = false; // Shows Player has not entered a valid response
+                            while (!valid) // Will loop until Player has entered a valid response ("Y" or "N")
+                            {
+                                // "Invalid Response" prompt and Player input
+                                System.out.println("Sorry. That response is not valid. Please indicate that you would like to\n" +
+                                        "restart by typing either Y or N");
+                                userRestart = userInput.nextLine();
+
+                                // Checks to see if Player has entered a valid response
+                                if (userRestart.equalsIgnoreCase("y") || userRestart.equalsIgnoreCase("n"))
+                                {
+                                    valid = true; // Shows Player has entered correct response of "Y" or "N"
+                                }
+                            }
+                        }
+                    }
+
+                    // Checks whether Player wanted to restart or not
+                    if (userRestart.equalsIgnoreCase("y")) // Player opted to restart
+                    {
+                        restart(p, o); // Resets Player/Opponent health and cooldowns and resets Level to Level 1
+                    }
+                    else // Player opted not to restart
+                    {
+                        playerDead = true; // Will end the game loop
+                    }
                 }
             }
         }
@@ -232,6 +269,14 @@ public class Main {
         p.reset(); // Resets Player health and cooldowns
         o.reset(); // Resets Opponent health and cooldowns
         p.setLevel(); // Increases current level Player is on by 1
+    }
+
+    private static void restart(Player p, Opponent o)
+    {
+        p.setLevel(1);
+        p.reset();
+        o.reset();
+        System.out.println("Welcome back! You'll start from Level 1 again.");
     }
 
     /**

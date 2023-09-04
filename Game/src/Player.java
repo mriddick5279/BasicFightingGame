@@ -44,6 +44,7 @@ public class Player {
     public int getHealth() { return health; }
 
     public void setLevel() {this.level += 1; }
+    public void setLevel(int level) { this.level = level; }
     public int getLevel() { return level; }
 
     public int getPrevAttackDamage() { return prevAttackDamage; }
