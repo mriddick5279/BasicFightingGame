@@ -34,3 +34,5 @@ Game can ONLY be played in a console as of now
 - Blocking move that will decrease damage the Player/Opponent would take from a move
 - Power-ups for both Player and Opponent
 - "Boss" stages
+- Save "Level High Score" and "Damage to Opponent High Score" for the Player
+  - Feature that allows the user to input their name will be included with this
