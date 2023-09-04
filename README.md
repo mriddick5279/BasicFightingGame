@@ -26,8 +26,12 @@ Game can ONLY be played in a console as of now
     if they wish to play again
 - Option to "Play Again" currently not available
 
-# Plans for Future Features
+# Added Features Since Initial Push
+## September 4th, 2023
 - "Play Again" option for when the Player is defeated
+  - Player can choose to restart the game or exit upon being defeated
+
+# Plans for Future Features
 - Increase in Opponent difficulty when a Player moves on to "The Next Level"
 - New attacks
 - Blocking move that will decrease damage the Player/Opponent would take from a move
