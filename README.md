@@ -2,7 +2,6 @@
 Simple turn based fighting game with basic AI opponent
 
 Game can ONLY be played in a console as of now
-
 # Initial Features
 
 ## Attacks
