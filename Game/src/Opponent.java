@@ -1,10 +1,11 @@
 public class Opponent {
 
-    private int health;
-    private int prevAttackDamage;
-    private int FKCooldown;
-    private int KCooldown;
+    private int health; // Keeps track of opponent health
+    private int prevAttackDamage; // Keeps track of the amount of damage the previous attack did
+    private int KCooldown; // Keeps track of the cooldown on the Kick move
+    private int FKCooldown; // Keeps track of the cooldown on the Flying Kick move
 
+    /* Constructor for Opponent class */
     public Opponent()
     {
         this.health = 100;
@@ -12,24 +13,31 @@ public class Opponent {
         this.FKCooldown = 0;
     }
 
+    /* Carries out the result of using the Punch attack */
     public void usePunch(boolean pTurn)
     {
         Punch p = new Punch(pTurn);
         prevAttackDamage = p.getDamage();
     }
 
+    /* Carries out the result of using the Kick attack */
     public void useKick(boolean pTurn)
     {
         Kick k = new Kick(pTurn);
         prevAttackDamage = k.getDamage();
     }
 
+    /* Carries out the result of using the Flying Kick attack */
     public void useFlyingKick(boolean pTurn)
     {
         FlyingKick fk = new FlyingKick(pTurn);
         prevAttackDamage = fk.getDamage();
     }
 
+    /**
+     * Setters and Getters for class variables
+     * NOTE: Setter for prevAttackDamage did not feel needed
+     */
     public void setHealth(int newHealth) { this.health = newHealth; }
     public int getHealth() { return health; }
 
@@ -61,6 +69,7 @@ public class Opponent {
     }
     public int getKCooldown() { return KCooldown; }
 
+    /* Sets cooldowns back to 0 and Opponent health back to 100 */
     public void reset()
     {
         health = 100;
