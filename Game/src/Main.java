@@ -1,7 +1,12 @@
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 public class Main {
 
@@ -21,6 +26,8 @@ public class Main {
 
         ArrayList<Integer> attacksAvailable; // Holds what attacks are available to the Player
         ArrayList<Integer> opponentAttacksAvailable; // Holds what attacks are available to the Opponent
+
+        int damageOutput = 0;
 
         while (!playerDead)
         {
@@ -65,6 +72,10 @@ public class Main {
                         break;
                 }
 
+                delay(2); // Allows Player time to read text
+
+                damageOutput += p.getPrevAttackDamage();
+
                 // Update cooldowns on Kick and Flying Kick moves for Player
                 if (!kUsed && p.getKCooldown() > 0)
                 {
@@ -81,10 +92,11 @@ public class Main {
                 if (o.getHealth() <= 0)
                 {
                     System.out.println("Congratulations! You have beaten this level, now onto the next!");
+                    delay(2); // Allows Player time to read text
                     nextLevel(p, o);
                     playerTurn = true;
                     System.out.println("Level " + p.getLevel() + ": FIGHT!");
-                    delay();
+                    delay(3);
                 }
             }
             else // Opponent's turn
@@ -102,8 +114,7 @@ public class Main {
                     compChoice = r.nextInt(3) + 1;
                 }
 
-                // Gives player time to read what the Opponent did
-                delay();
+                delay(3); // Allows Player time to read text
 
                 boolean kUsed = false; // Keeps track of if the Kick move was just used
                 boolean fkUsed = false; // Keeps track of if the Flying Kick move was just used
@@ -129,6 +140,8 @@ public class Main {
                         break;
                 }
 
+                delay(3); // Allows Player time to read text
+
                 // Update cooldowns on Kick and Flying Kick moves for Opponent
                 if (!kUsed && o.getKCooldown() > 0)
                 {
@@ -144,9 +157,13 @@ public class Main {
                 // Checks for GAME OVER scenario where Player is defeated and prompts Player on if they want to restart
                 if (p.getHealth() <= 0 )
                 {
-                    // "Restart Game" prompt and Player input
-                    System.out.println("You have been defeated. Would you like to restart?\n" +
-                            "Y or N");
+                    // "Defeated" prompt and check for high score
+                    System.out.println("You have been defeated.");
+                    delay(3);
+                    saveHighScores(p, damageOutput);
+
+                    // "Restart" prompt and Player input for restarting
+                    System.out.println("Would you like to restart? Y or N");
                     String userRestart = userInput.nextLine();
 
                     boolean valid; // Keeps track of if the Player has entered a valid response to "Restart Game" prompt
@@ -177,6 +194,7 @@ public class Main {
                     if (userRestart.equalsIgnoreCase("y")) // Player opted to restart
                     {
                         restart(p, o); // Resets Player/Opponent health and cooldowns and resets Level to Level 1
+                        delay(2); // Allows Player time to read text
                     }
                     else // Player opted not to restart
                     {
@@ -188,6 +206,7 @@ public class Main {
 
         // GAME OVER message
         System.out.println("GAME OVER! Better luck next time!");
+        delay(2); // Allows Player time to read text
     }
 
     /**
@@ -285,13 +304,69 @@ public class Main {
     }
 
     /**
+     * Will save the score the Player achieved if they got a score higher than one that already exists
+     * @param p is the Player
+     * @param damageOutput is the amount of damage the Player did to the Opponent
+     */
+    private static void saveHighScores(Player p, int damageOutput)
+    {
+        System.out.println(damageOutput);
+        try
+        {
+            // Getting file and setting up file reader
+            File highScores = new File("HighScores.json");
+            Reader r = new FileReader(highScores);
+
+            // Setting up parser for the JSON file
+            JSONParser parser = new JSONParser();
+            JSONArray JSONscores = (JSONArray) parser.parse(r);
+
+            int totalScore = damageOutput + p.getLevel(); // The total score for the Player
+
+            /* Loop will go through the list of high scores and see if the Player's score is higher than an existing one*/
+            for (int i = 0 ; i < JSONscores.size() ; i++)
+            {
+                // Getting the score from certain location in the array
+                JSONObject currScore = (JSONObject) JSONscores.get(i);
+                String score = (String) currScore.get("high score");
+
+                int compareScore = Integer.parseInt(score); // Simplifies comparison in if statement
+
+                if (totalScore > compareScore) // Player's score is higher than the one found
+                {
+                    // "New High Score" prompt and Player name input
+                    System.out.println("Congratulations! You've set a new High Score!\n" +
+                            "Enter a name below so it can be saved and looked at later!\n");
+                    String name = userInput.nextLine();
+                    String enterScore = Integer.toString(totalScore);
+
+                    // Putting the Player's score into the JSON file
+                    JSONObject newScore = new JSONObject();
+                    newScore.put("name", (String) name);
+                    newScore.put("high score", (String) enterScore);
+                    JSONscores.add(newScore);
+                    FileWriter w = new FileWriter("HighScores.json");
+                    w.write(JSONscores.toJSONString());
+                    w.close();
+                    break;
+                }
+            }
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Delays output to console by 3 seconds to give the user time to read messages between levels and during Opponent attacks
      */
-    private static void delay()
+    private static void delay(int seconds)
     {
         try
         {
-            TimeUnit.SECONDS.sleep(3); // Line that delays console output by 3 seconds
+            TimeUnit.SECONDS.sleep(seconds); // Line that delays console output by 3 seconds
         }
         catch (Exception e)
         {
